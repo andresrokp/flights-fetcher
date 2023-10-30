@@ -27,7 +27,6 @@ fetch(url, { method:'GET', headers: headers })
             const identification = flight.identification || {};
             const status = flight.status || {};
             const aircraft = flight.aircraft || {};
-            const owner = flight.owner || {};
             const airline = flight.airline || {};
             const airport = flight.airport || {};
             const time = flight.time || {};
@@ -39,11 +38,8 @@ fetch(url, { method:'GET', headers: headers })
             const origin = (airport.origin && airport.origin.code && airport.origin.code.iata) || "N/A";
             const destination = data.result.request.code;
             const departure_time = time.scheduled.departure || "N/A";
-            // const departure_time_formatted = DateTime.fromMillis(departure_time * 1000).toFormat("dd/MM@HH:mm");
             const arrival_time = time.scheduled.arrival || "N/A";
-            // const arrival_time_formatted = DateTime.fromMillis(arrival_time * 1000).toFormat("dd/MM@HH:mm");
             const eta_time = time.other.eta || "N/A";
-            // const eta_time_formatted = eta_time !== "N/A" ? DateTime.fromMillis(eta_time * 1000).toFormat("dd/MM@HH:mm") : "N/A";
             const status_text = status.text || "N/A";
 
             table_data.push([flight_id, flight_number, airline_name, aircraft_model, origin, destination, departure_time, arrival_time, eta_time, status_text]);
