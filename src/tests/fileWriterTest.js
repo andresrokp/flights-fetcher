@@ -5,17 +5,24 @@ const url = process.env.URL;
 const headers = JSON.parse(process.env.HEADERS);
 
 
-module.exports = async function fetchPreliminar(){
+module.exports = function fetchPreliminar(){
 
-    const response = await fetch(url, { method:'GET', headers: headers })
-    if (response.status === 200) {
-        console.log('response',response);
-        
-        const data =  await response.json();
+    fetch(url, { method:'GET', headers: headers })
+    .then(response => {
+        if (response.status === 200) {
+            // console.log('response',response);
+            return response.json();
+        }else {
+            console.log("BAD", response);
+        }
+    }).then( jsonResponse => {
+        const data = jsonResponse;
+        // console.log('data',data);
+        const out_file = 'arrivalsOut.json';
+        fs.writeFileSync(out_file, JSON.stringify(data, null, 4));
+
         const arrivals_data = data.result.response.airport.pluginData.schedule.arrivals.data;
-        if (arrivals_data) console.log('There is data!');
-
-        const table_data = [];
+        const table_data = [["ID", "Flight Number", "Airline", "Modelo", "Origin", "Destination", "Departure Time sch", "Arrival Time sch", "ETA", "Status"]];
 
         arrivals_data.forEach(arrival => {
             const flight = arrival.flight || {};
@@ -37,11 +44,16 @@ module.exports = async function fetchPreliminar(){
             const eta_time = time.other.eta || "N/A";
             const status_text = status.text || "N/A";
 
-            table_data.push({flight_id, flight_number, airline_name, aircraft_model, origin, destination, departure_time, arrival_time, eta_time, status_text});
+            table_data.push([flight_id, flight_number, airline_name, aircraft_model, origin, destination, departure_time, arrival_time, eta_time, status_text]);
         });
 
-        return table_data;
-    }else {
-        console.log("BAD", response);
-    }
+        // console.log(table_data.map(row => row.join('\t')).join('\n'));
+
+        const txt_out_file = 'arrivalsOut.txt';
+        fs.writeFileSync(txt_out_file, table_data.map(row => row.join('\t')).join('\n'));
+    })
+    .catch(error => {
+        console.log('VERY BAD\n', error);
+    });
+
 }
