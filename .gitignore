@@ -1,3 +1,4 @@
-*.txt*
-*.json*
+*Out.txt*
+*Out.json*
 *node_modules*
+*.env*
