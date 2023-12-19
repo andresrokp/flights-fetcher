@@ -7,7 +7,10 @@ const headers = JSON.parse(process.env.HEADERS);
 
 module.exports = async function fetchPreliminar(){
 
-    const response = await fetch(url, { method:'GET', headers: headers })
+    const nowInSeconds = Math.floor(Date.now() / 1000);
+    const urlTimed = url.replace('NOW_TIME', nowInSeconds.toString());
+    console.log(urlTimed)
+    const response = await fetch(urlTimed, { method:'GET', headers: headers })
     if (response.status === 200) {
         
         const data =  await response.json();
