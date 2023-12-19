@@ -4,7 +4,7 @@
   "description": "Test to receive airport petition, query api and respond a fligth list",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon ./src/app.js"
   },
   "repository": {
     "type": "git",
