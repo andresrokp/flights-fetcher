@@ -5,12 +5,15 @@ const url = process.env.URL;
 const headers = JSON.parse(process.env.HEADERS);
 
 
-module.exports = async function fetchPreliminar(){
+module.exports = async function fetchFromApi(){
 
+    // insert time un fetch url
     const nowInSeconds = Math.floor(Date.now() / 1000);
     const urlTimed = url.replace('NOW_TIME', nowInSeconds.toString());
     console.log(urlTimed)
+
     const response = await fetch(urlTimed, { method:'GET', headers: headers })
+    
     if (response.status === 200) {
         
         const data =  await response.json();
@@ -18,7 +21,7 @@ module.exports = async function fetchPreliminar(){
         // console.log('arrivals_data',arrivals_data);
         if (arrivals_data) console.log('There is data!');
 
-        const table_data = [];
+        const data_array = [];
 
         arrivals_data.forEach(arrival => {
 
@@ -44,10 +47,10 @@ module.exports = async function fetchPreliminar(){
             const eta_time = time.other.eta || "N/A";
             const status_text = status.text || "N/A";
 
-            table_data.push({flight_id, flight_number, airline_name, aircraft_model, aircraft_registration, origin, destination, departure_time, arrival_time, eta_time, status_text});
+            data_array.push({flight_id, flight_number, airline_name, aircraft_model, aircraft_registration, origin, destination, departure_time, arrival_time, eta_time, status_text});
         });
 
-        return table_data;
+        return data_array;
     }else {
         console.log("BAD", response);
     }
