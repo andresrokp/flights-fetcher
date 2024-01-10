@@ -34,20 +34,14 @@ module.exports = async function deleteTelemetry(
         "X-Authorization": `Bearer ${authorizationToken}`,
     };
 
-    console.log({
-        url,
-        info: {
-            method: "DELETE",
-            headers: headers,
-        }
-    });
+    console.log('\t>> ', url);
 
     const response = await fetch(url, {
         method: "DELETE",
         headers: headers,
     });
 
-    console.log(response);
+    // console.log(response);
 
     if (response.ok) {
         return response;
