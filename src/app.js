@@ -17,7 +17,7 @@ app.listen(process.env.PORT, ()=>{
 app.get('/',async (req,res)=>{
     await deleteTelemetry(entityType, entityId, keys, true, 0, Date.now(), rewriteLatestIfDeleted, authorizationToken);
     console.log('Telemetry deleted successfully');
-    const data = await fetchFromApi();
+    const data = await fetchFromApi(3);
     // console.log(data);
     res.json(data)
 })

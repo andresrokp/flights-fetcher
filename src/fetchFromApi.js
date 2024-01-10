@@ -5,21 +5,21 @@ const url = process.env.URL;
 const headers = JSON.parse(process.env.HEADERS);
 
 
-module.exports = async function fetchFromApi(){
+module.exports = async function fetchFromApi(pageNum){
 
     // insert time un fetch url
     const nowInSeconds = Math.floor(Date.now() / 1000);
-    const urlTimed = url.replace('NOW_TIME', nowInSeconds.toString());
-    console.log(urlTimed)
+    const urlTimedPaged = url.replace('NOW_TIME', nowInSeconds.toString()).replace('PAGE_NUM', pageNum);
+    console.log(urlTimedPaged)
 
-    const response = await fetch(urlTimed, { method:'GET', headers: headers })
+    const response = await fetch(urlTimedPaged, { method:'GET', headers: headers })
     
     if (response.status === 200) {
         
         const data =  await response.json();
         const arrivals_data = data.result.response.airport.pluginData.schedule.arrivals.data;
         // console.log('arrivals_data',arrivals_data);
-        if (arrivals_data) console.log('There is data!');
+        if (arrivals_data) console.log('> arrivals_data fetched');
 
         const data_array = [];
 
