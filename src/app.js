@@ -14,10 +14,30 @@ app.listen(process.env.PORT, ()=>{
     console.log(`Servidor escuchando. Puerto ${process.env.PORT}`);
 })
 
+function getRand(a, b) {
+    if (!Number.isInteger(a) || !Number.isInteger(b)) {
+        throw new Error('Both parameters must be integers');
+    }
+
+    if (a > b) {
+        throw new Error('The first parameter (a) must be less than or equal to the second parameter (b)');
+    }
+
+    return Math.floor(Math.random() * (b - a + 1)) + a;
+}
+
+function getRandMillis() {
+    return getRand(10,20)*1000+getRand(1,1000);
+}
+
 app.get('/',async (req,res)=>{
     await deleteTelemetry(entityType, entityId, keys, true, 0, Date.now(), rewriteLatestIfDeleted, authorizationToken);
     console.log('Telemetry deleted successfully');
-    const data = await fetchFromApi(3);
+    const data_p1 = await fetchFromApi(1);
+    await new Promise((res,rej)=>{setTimeout(() => {res()},getRandMillis() );})
+    const data_p12 = data_p1.concat(await fetchFromApi(2));
+    await new Promise((res,rej)=>{setTimeout(() => {res()},getRandMillis() );})
+    const data_p123 = data_p12.concat(await fetchFromApi(3));
     // console.log(data);
-    res.json(data)
+    res.json(data_p123);
 })

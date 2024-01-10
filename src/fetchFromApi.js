@@ -6,7 +6,7 @@ const headers = JSON.parse(process.env.HEADERS);
 
 
 module.exports = async function fetchFromApi(pageNum){
-
+    console.log(`Fetching data p${pageNum}...`)
     // insert time un fetch url
     const nowInSeconds = Math.floor(Date.now() / 1000);
     const urlTimedPaged = url.replace('NOW_TIME', nowInSeconds.toString()).replace('PAGE_NUM', pageNum);
@@ -19,7 +19,7 @@ module.exports = async function fetchFromApi(pageNum){
         const data =  await response.json();
         const arrivals_data = data.result.response.airport.pluginData.schedule.arrivals.data;
         // console.log('arrivals_data',arrivals_data);
-        if (arrivals_data) console.log('> arrivals_data fetched');
+        if (arrivals_data) console.log('> arrivals_data fetched p', pageNum);
 
         const data_array = [];
 
