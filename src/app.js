@@ -32,13 +32,20 @@ function getRandMillis() {
     return getRand(10,20)*1000+getRand(1,1000);
 }
 
+let bearerToken;
+
 app.get('/',async (req,res)=>{
 
     console.log('\n:: New request :: ', new Date(), '::');
-
-    const bearerToken = await getBearerToken();
     
-    await deleteTelemetry(entityType, entityId, keys, true, 0, Date.now(), rewriteLatestIfDeleted, bearerToken);
+    try{
+        await deleteTelemetry(entityType, entityId, keys, true, 0, Date.now(), rewriteLatestIfDeleted, bearerToken);
+    }catch(e){
+        console.error(e);
+        console.log('...Trying again...')
+        bearerToken = await getBearerToken();
+        await deleteTelemetry(entityType, entityId, keys, true, 0, Date.now(), rewriteLatestIfDeleted, bearerToken);
+    }
         
     const data_p1 = await fetchFromApi(1);
     await new Promise((res,rej)=>{setTimeout(() => {res()},getRandMillis() );})
