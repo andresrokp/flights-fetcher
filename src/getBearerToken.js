@@ -2,6 +2,7 @@ require('dotenv').config();
 
 async function getBearerToken() {
     try {
+        console.log('...Getting auth token...');
         const { CREDENTIALS_URL, CREDENDIALS_USER, CREDENTIALS_PASS } = process.env;
         const url = CREDENTIALS_URL;
         const data = {
@@ -20,6 +21,7 @@ async function getBearerToken() {
         const responseData = await response.json();
 
         if (response.ok) {
+            console.log('\t>> Token fetched successfully');
             return responseData.token;
         } else {
             throw new Error(`Failed to get token. Status: ${response.status}, Message: ${responseData.message}`);

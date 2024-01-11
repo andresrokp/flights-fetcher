@@ -3,6 +3,8 @@ const cors = require('cors');
 const express = require('express');
 const fetchFromApi = require('./fetchFromApi.js');
 const deleteTelemetry = require('./deleteTelemetry.js');
+const getBearerToken = require('./getBearerToken.js');
+
 
 const { entityType,entityId,keys,deleteAllDataForKeys,startTs,endTs,rewriteLatestIfDeleted,authorizationToken } = process.env;
 
@@ -32,9 +34,11 @@ function getRandMillis() {
 
 app.get('/',async (req,res)=>{
 
-    console.log('\n:: New request :: ', new Date(), '::');    
+    console.log('\n:: New request :: ', new Date(), '::');
+
+    const bearerToken = await getBearerToken();
     
-    await deleteTelemetry(entityType, entityId, keys, true, 0, Date.now(), rewriteLatestIfDeleted, authorizationToken);
+    await deleteTelemetry(entityType, entityId, keys, true, 0, Date.now(), rewriteLatestIfDeleted, bearerToken);
         
     const data_p1 = await fetchFromApi(1);
     await new Promise((res,rej)=>{setTimeout(() => {res()},getRandMillis() );})
