@@ -52,7 +52,9 @@ app.get('/',async (req,res)=>{
     const data_p12 = data_p1.concat(await fetchFromApi(2));
     await new Promise((res,rej)=>{setTimeout(() => {res()},getRandMillis() );})
     const data_p123 = data_p12.concat(await fetchFromApi(3));
+    await new Promise((res,rej)=>{setTimeout(() => {res()},getRandMillis() );})
+    const data_p1234 = data_p123.concat(await fetchFromApi(4));
     
     console.log('...Sending data...');
-    res.json(data_p123);
+    res.json(data_p1234);
 })
