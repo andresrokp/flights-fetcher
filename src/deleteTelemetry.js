@@ -23,6 +23,8 @@ module.exports = async function deleteTelemetry(
   rewriteLatestIfDeleted,
   authorizationToken
 ) {
+    console.log('...Deleting telemetry...');
+
     let url = `${process.env.DELETE_DNS}/${entityType}/${entityId}/timeseries/delete?keys=${encodeURIComponent(keys)}&deleteAllDataForKeys=${deleteAllDataForKeys}&rewriteLatestIfDeleted=${rewriteLatestIfDeleted}`;
     if (deleteAllDataForKeys != true){
         startTs = new Date(startTs).getTime()
@@ -44,6 +46,7 @@ module.exports = async function deleteTelemetry(
     // console.log(response);
 
     if (response.ok) {
+        console.log('\t>> Telemetry deleted successfully');
         return response;
     } else {
         throw new Error(

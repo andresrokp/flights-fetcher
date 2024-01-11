@@ -31,15 +31,17 @@ function getRandMillis() {
 }
 
 app.get('/',async (req,res)=>{
-    console.log('\n:: ', new Date(), '::');
-    console.log('...Deleting telemetry...');
+
+    console.log('\n:: New request :: ', new Date(), '::');    
+    
     await deleteTelemetry(entityType, entityId, keys, true, 0, Date.now(), rewriteLatestIfDeleted, authorizationToken);
-    console.log('\t>> Telemetry deleted successfully');
+        
     const data_p1 = await fetchFromApi(1);
     await new Promise((res,rej)=>{setTimeout(() => {res()},getRandMillis() );})
     const data_p12 = data_p1.concat(await fetchFromApi(2));
     await new Promise((res,rej)=>{setTimeout(() => {res()},getRandMillis() );})
     const data_p123 = data_p12.concat(await fetchFromApi(3));
+    
     console.log('...Sending data...');
     res.json(data_p123);
 })
